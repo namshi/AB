@@ -265,46 +265,6 @@ $test->get('par3'); // Whoooops!
 $test->get('i-dont-exist'); // NULL
 ```
 
-## How odds internally work
-
-When you assign variations with their odds to a test,
-you must specify absolute values, but internally the
-test converts them into `Odd` objects which have
-a percentage-based value, with minimum and maximum limit.
-
-WAIT WHAT?
-
-The limits are used to then pick one variation among all
-the others: for example, when you specify 2 variations, `A`
-with odds 1 and `B` with odds 2, the `Test` converts them
-into objects with the folowing properties:
-
-* A
-    * value:    33 (%)
-    * min:      0
-    * max:      33
-* B
-    * value:    66 (%)
-    * min:      34
-    * max:      100
-
-This should make the entire concept a little bit
-clearer.
-
-When you call `getVariation` for the first time,
-the test runs and picks the variation by generating
-a random number between 1 and 100, and getting the
-variation that "contains" that number.
-
-For example, this is what you would get, from the
-example above, with this list of random numbers:
-
-* 1:    `A`
-* 100:  `B`
-* 50:   `B`
-* 33:   `A`
-* 34:   `B`
-
 ## Testing this library
 
 This library has been unit tested with

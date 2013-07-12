@@ -293,70 +293,25 @@ class Test implements Countable
     
     /**
      * Calculates the variation of this test.
-     * 
-     * The variation is calculated generating Odds for all the variations of the
-     * test and a random number. If the number matches the odd, the variation
-     * with that odd is picked.
      */
     protected function calculateVariation()
     {
         if ($this->getSeed()) {
             mt_srand($this->getSeed());
         }
-        
-        $random = mt_rand(1, 100);
-        $odds   = $this->calculateOdds();
-        
-        foreach ($odds as $variation => $odd) {
-            if ($odd->matches($random)) {
-                $this->variation = $variation;
-            }
-        }
-    }
-    
-    /**
-     * Given that variations are given with absolute weight (ie. a:1, b:2 means
-     * a has 33% and b 66%), this function converts the absolute odd into a
-     * percentage, putting it into an Odd object that also registers minimum
-     * and maximum for that particular odd.
-     * 
-     * Minimum and maximum are then used to check whether a random-generated
-     * number matches the odd. Following the example above, our odds will
-     * become:
-     * - a:
-     *      - absolute value:   1
-     *      - value:            33
-     *      - minimum:          0
-     *      - maximum:          33
-     * -b:
-     *      - absolute value:   2
-     *      - value:            66
-     *      - minimum:          34
-     *      - maximum:          100
-     * 
-     * which means that if you generate a random number between 1 and 100 you
-     * can then check where it lies among the odds (10 would nail a, 50 would
-     * nail b).
-     * 
-     * @return array
-     */
-    protected function calculateOdds()
-    {
-        $odds = array();
-        $min  = 0;
-        $max  = 0;
+
+        $random = mt_rand(1, array_sum($this->getVariations()));
+        $min    = 0;
+        $max    = 0;
         
         foreach ($this->getVariations() as $variation => $odd) {
-            $odd = (int) number_format($odd * 100 / array_sum($this->getVariations()), 0);
             $max += $odd;
-            $odds[$variation] = new Odd($odd, $min, $max);
-            $min += $odd;
+
+            if ($odd && $random > $min && $random <= $max) {
+                $this->variation = $variation;
+            }
+            
+            $min = $max;
         }
-        
-        $variations                     = array_keys($odds);
-        $lastVariation                  = end($variations);
-        $odds[$lastVariation]->setMax(100);
- 
-        return $odds;
     }
 }
