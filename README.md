@@ -15,3 +15,9 @@ that says "Buy now", "Go to checkout" or
 ## Creating and running a test
 
 ## Handling multiple tests
+
+## How to present the same variations across multiple requests
+
+## Disabling tests
+
+## How odds internally work

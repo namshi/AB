@@ -75,11 +75,11 @@ class TestTest extends \PHPUnit_Framework_TestCase
         
         $this->assertTrue($test->hasRun());
         
-        $test->hasRun(false);
+        $test->hasRun(0);
         
         $this->assertFalse($test->hasRun());
         
-        $test->hasRun(true);
+        $test->hasRun(1);
         
         $this->assertTrue($test->hasRun());
     }
@@ -110,10 +110,10 @@ class TestTest extends \PHPUnit_Framework_TestCase
     {
         $tries  = 100000;
         $test   = $this->getTest('test', array('a' => 1, 'b' => 1));
-        $test->run();
         $counts = array('a' => 0, 'b' => 0);
         
         for ($i = 0; $i < $tries; $i++) {
+            $test->run();
             $counts[$test->getVariation()] += 1;
         }
         
@@ -130,10 +130,10 @@ class TestTest extends \PHPUnit_Framework_TestCase
     {
         $tries  = 100000;
         $test   = $this->getTest('test', array('a' => 1, 'b' => 2));
-        $test->run();
         $counts = array('a' => 0, 'b' => 0);
         
         for ($i = 0; $i < $tries; $i++) {
+            $test->run();
             $counts[$test->getVariation()] += 1;
         }
         
