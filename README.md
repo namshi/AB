@@ -20,4 +20,8 @@ that says "Buy now", "Go to checkout" or
 
 ## Disabling tests
 
+## Test parameters
+
 ## How odds internally work
+
+## Testing this library

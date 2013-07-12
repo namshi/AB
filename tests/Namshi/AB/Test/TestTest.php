@@ -9,9 +9,9 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Namshi\AB\Test
      */
-    public function getTest($name = 'myTest', array $variations = array('a' => 0, 'b' => 1))
+    public function getTest($name = 'myTest', array $variations = array('a' => 0, 'b' => 1), array $parameters = array())
     {
-        return new Test($name, $variations);
+        return new Test($name, $variations, $parameters);
     }
     
     public function testTheTestsFirstArgumentIsItsName()
@@ -104,6 +104,29 @@ class TestTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < 1000; $i++) {
             $this->assertEquals('a', $test->getVariation());
         }
+    }
+    
+    /**
+     * @expectedException BadMethodCallException
+     */
+    public function testRunningATestWithoutVariationThrowsAnException()
+    {
+        $this->getTest('name', array(), array('a' => 'myParam'))->run();
+    }
+    
+    public function testTheTestCanHaveParameters()
+    {
+        $test = $this->getTest('name', array(1), array('a' => 'myParam'));
+        
+        $this->assertCount(1, $test->getParameters());
+        $this->assertEquals('myParam', $test->get('a'));
+        $this->assertNull($test->get('nonExistingParam'));
+        
+        $test->run(array('b' => 12, 'a' => 11));
+        
+        $this->assertCount(2, $test->getParameters());
+        $this->assertEquals(12, $test->get('b'));
+        $this->assertEquals(11, $test->get('a'));
     }
     
     public function testGettingTheVariationOfATestWithSplitOddsBetweenTwoVariations()

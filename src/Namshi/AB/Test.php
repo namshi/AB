@@ -17,6 +17,10 @@ class Test implements Countable
     protected $isEnabled    = true;
     protected $hasRun       = false;
     protected $variation;
+    protected $parameters = array();
+    
+    const ERROR_TEST_RAN_WITHOUT_VARIATIONS         = "You are trying to run a test without specifying its variations";
+    const ERROR_GET_VARIATION_BEFORE_RUNNING_TEST   = "You must run() the test before getting its variation";
     
     /**
      * Creates a test with the given $name and the specified $variations.
@@ -29,11 +33,13 @@ class Test implements Countable
      * 
      * @param string $name
      * @param array $variations
+     * @param array $parameters
      */
-    public function __construct($name, array $variations = array())
+    public function __construct($name, array $variations = array(), array $parameters = array())
     {
         $this->setName($name);
         $this->setVariations($variations);
+        $this->setParameters($parameters);
     }
     
     /**
@@ -119,10 +125,16 @@ class Test implements Countable
     /**
      * Runs the test.
      * 
+     * @param array $parameters
      * @return bool
      */
-    public function run()
+    public function run(array $parameters = array())
     {
+        if (!$this->count()) {
+            throw new BadMethodCallException(self::ERROR_TEST_RAN_WITHOUT_VARIATIONS);
+        }
+        
+        $this->setParameters(array_merge($this->getParameters(), $parameters));
         $this->hasRun(true);
         $this->calculateVariation();
     }
@@ -150,7 +162,7 @@ class Test implements Countable
             return $this->variation;
         }
         
-        throw new BadMethodCallException("You must run() the test before getting its variation");
+        throw new BadMethodCallException(self::ERROR_GET_VARIATION_BEFORE_RUNNING_TEST);
     }
     
     /**
@@ -166,6 +178,39 @@ class Test implements Countable
         }
         
         return (bool) $this->hasRun;
+    }
+    
+    /**
+     * Gets the parameters for this test.
+     * 
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Sets the parameters for this test.
+     * 
+     * @param array $parameters
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+    
+    /**
+     * Returns a test's parameter.
+     * 
+     * @param string $parameter
+     * @return mixed
+     */
+    public function get($parameter)
+    {
+        if (isset($this->parameters[$parameter])) {
+            return $this->parameters[$parameter];
+        }
     }
     
     /**
