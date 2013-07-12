@@ -12,6 +12,16 @@ that says "Buy now", "Go to checkout" or
 
 ## Installation
 
+This library is available through composer,
+as you can see from its
+[packagist page](https://packagist.org/packages/namshi/ab).
+
+Just require it in your `composer.json`:
+
+```
+"namshi/ab": "1.0.*"
+```
+
 ## Creating and running a test
 
 ## Handling multiple tests
