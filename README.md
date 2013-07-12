@@ -72,7 +72,7 @@ $container = new Container(array(
 ));
 
 // add another test
-$container->add(new Test('checkout_button_test', array(
+$container->add(new Test('checkout_button_text', array(
     'Buy now'               => 4,
     'Go to checkout'        => 1,
     'Proceed to checkout'   => 1,
@@ -101,6 +101,37 @@ echo count($tests);
 ```
 
 ## Variations
+
+Variations' weight must be expressed in absolute values: if, for
+example, you have `A: 1`, `B: 2` and `C: 1`, that means that the
+percentage of picking each variation is 25% (A), 50% (B) and
+25%(C), as the sum of the weights is 4.
+
+Variations can be set while constructing the test or later on:
+
+``` php
+$test = new Test('checkout_button_text', array(
+    'Buy now!'          => 1,
+    'Go to checkout!'   => 1,
+));
+
+// or you can set them afterwards
+$test = new Test('checkout_button_text');
+
+$test->setVariations(array(
+    'Buy now!'          => 1,
+    'Go to checkout!'   => 1,
+));
+```
+
+Remember to set the variations before running the test
+with `getVariation`, else an exception is thrown:
+
+``` php
+$test = new Test('checkout_button_text');
+
+$test->getVariation(); // will throw a BadMethodCallException
+```
 
 ## How to present the same variations across multiple requests
 
