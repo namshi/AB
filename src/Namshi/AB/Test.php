@@ -18,7 +18,8 @@ class Test implements Countable
     protected $isEnabled    = true;
     protected $hasRun       = false;
     protected $variation;
-    protected $parameters = array();
+    protected $parameters   = array();
+    protected $seed;
     
     const ERROR_TEST_RAN_WITHOUT_VARIATIONS         = "You are trying to run a test without specifying its variations";
     const ERROR_GET_VARIATION_BEFORE_RUNNING_TEST   = "You must run() the test before getting its variation";
@@ -94,6 +95,28 @@ class Test implements Countable
     {
         $this->validateVariations($variations);
         $this->variations = $variations;
+    }
+
+    /**
+     * Gets the seed for this test.
+     * 
+     * @return int
+     */
+    public function getSeed()
+    {
+        return $this->seed;
+    }
+
+    /**
+     * Sets the seed for this test.
+     * 
+     * @param int $seed
+     */
+    public function setSeed($seed)
+    {
+        if (!$this->hasRun()) {
+            $this->seed = (int) $seed;
+        }
     }
     
     /**
@@ -277,6 +300,10 @@ class Test implements Countable
      */
     protected function calculateVariation()
     {
+        if ($this->getSeed()) {
+            mt_srand($this->getSeed());
+        }
+        
         $random = mt_rand(1, 100);
         $odds   = $this->calculateOdds();
         

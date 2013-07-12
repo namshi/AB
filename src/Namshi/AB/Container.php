@@ -12,17 +12,58 @@ use Countable;
 class Container implements ArrayAccess, Countable
 {
     protected $tests = array();
+    protected $seed;
     
     /**
      * Constructor
      * 
      * @param array $tests
+     * @param int $seed
      */
-    public function __construct(array $tests = array())
+    public function __construct(array $tests = array(), $seed = null)
     {
         foreach ($tests as $test) {
             $this->add($test);
         }
+        
+        if ($seed) {
+            $this->setSeed($seed);
+        }
+    }
+    
+    /**
+     * Get the seed to be passed to each test.
+     * 
+     * @return int
+     */
+    public function getSeed()
+    {
+        return $this->seed;
+    }
+
+    /**
+     * Sets the seed to be passed to each test.
+     * 
+     * @param int $seed
+     */
+    public function setSeed($seed)
+    {
+        $this->seed = (int) $seed;
+        
+        foreach($this->getAll() as $test) {            
+            $test->setSeed($this->calculateTestSeed($test));
+        }
+    }
+    
+    protected function calculateTestSeed(Test $test)
+    {
+        $seed = '';
+        
+        foreach (str_split($test->getName()) as $letter) {
+            $seed .= is_numeric($letter) ? $letter : ord($letter) - 96;
+        }
+        
+        return $seed;
     }
     
     /**
@@ -53,6 +94,10 @@ class Container implements ArrayAccess, Countable
      */
     public function add(Test $test)
     {
+        if ($this->getSeed()) {
+            $test->setSeed($this->calculateTestSeed($test));
+        }
+        
         $this->tests[$test->getName()] = $test;
     }
     

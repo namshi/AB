@@ -136,6 +136,20 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($test->get('b'));
     }
     
+    public function testIfYouSeedTheTestItAlwaysGeneratesTheSameVariation()
+    {
+        $results = array();
+        $tries   = 10000;
+        
+        for ($i = 0; $i < $tries; $i++) {
+            $test       = $this->getTest('test', array('a' => 1, 'b' => 2, 'c' => 1, 'd' => 1));
+            $test->setSeed(12);
+            $results[]  = $test->getVariation();
+        }
+
+        $this->assertCount(1, array_unique($results));
+    }
+    
     public function testGettingTheVariationOfATestWithSplitOddsBetweenTwoVariations()
     {
         $tries  = 100000;

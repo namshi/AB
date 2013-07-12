@@ -75,4 +75,31 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('mySetYesy', $test->getName());
         }
     }
+    
+    public function testYouCanSeedOverTheContainer()
+    {
+        $resultsAbc4    = array();
+        $resultsAb      = array();
+        $tries          = 100;
+        $container      = new Container(array(), 12);
+        
+        for ($i = 0; $i < $tries; $i++) {
+            $test   = new Test('abc4', array('a' => 1, 'b' => 2, 'c' => 1, 'd' => 1));
+            $container->add($test);
+            
+            $testAb = new Test('cd123jkbkjtbt', array('a' => 1, 'b' => 2, 'c' => 1, 'd' => 1));
+            $container->add($testAb);
+            
+            $resultsAbc4[]  = $container['abc4']->getVariation();
+            $resultsAb[]    = $container['cd123jkbkjtbt']->getVariation();
+        }
+
+        $this->assertCount(1, array_unique($resultsAbc4));
+        $this->assertEquals(1234, $test->getSeed());
+
+        $this->assertCount(1, array_unique($resultsAb));
+        $this->assertEquals(3412310112111020220, $testAb->getSeed());
+        
+        $this->assertNotEquals($testAb->getVariation(), $test->getVariation());
+    }
 }

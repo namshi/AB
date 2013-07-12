@@ -135,6 +135,54 @@ $test->getVariation(); // will throw a BadMethodCallException
 
 ## How to present the same variations across multiple requests
 
+Let's say that you are running a test that defines whether
+the background color of your website should be black or white.
+
+Once a user hits the homepage, he will get the white one, but
+as soon as he refreshes the page he might get the white one!
+
+To be consistent with the variations, for a user's session,
+you should store a unique number (seed) and pass it to the
+tests before running them, so you will always be sure that
+specific user will always get the same variations of the
+tests:
+
+``` php
+$test = new Test('homepage_color', array(
+    'white' => 1,
+    'black' => 1,
+));
+
+// set the seed
+$test->setSeed($_SESSION['seed_for_homepage_color_test']); // 326902637627;
+
+$test->getVariation(); // black
+```
+
+In the next request, since the seed won't change,
+the user will get again the same variation, `black`.
+
+This functionality is implemented thanks to
+PHP's `mt_rand` and `mt_srand` functions.
+
+You shouldn't specify a different seed for each of your
+tests, but use the container instead:
+
+``` php
+$container = new Container(new Test('homepage_color', array(
+    'black' => 1,
+    'white' => 1,
+)));
+
+$container->setSeed($_SESSION['seed']); // 326902637627;);
+```
+
+The advantage of setting the seed through the container is that
+you don't have to maintain a seed for every test you run in
+the session, you can just use a global seed and the container
+will assign a unique seed to each test by combining the general
+seed and a numerical version of the tests' name (`abce` becomes `1235`).
+
 ## Disabling tests
 
 Sometimes you might want to disable tests for different purposes,
