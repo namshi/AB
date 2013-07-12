@@ -35,8 +35,6 @@ $homepageColorTest = new Test('homepage_color', array(
     'blue' => 1,
     'red' => 1,
 ));
-
-$homepageColorTest->run();
 ```
 
 and at this point you can change the color of the

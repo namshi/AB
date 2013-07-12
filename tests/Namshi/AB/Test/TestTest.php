@@ -51,18 +51,10 @@ class TestTest extends \PHPUnit_Framework_TestCase
 
             $this->assertFalse($test->isEnabled());
             $this->assertTrue($test->isDisabled());
-            $test->run();
+            $test->getVariation();
             
             $this->assertEquals('a', $test->getVariation());
         }
-    }
-    
-    /**
-     * @expectedException BadMethodCallException
-     */
-    public function testGettingAVariationOfATestThatHasntRunThrowsAnException()
-    {
-        $this->getTest()->getVariation();
     }
     
     public function testCheckingIfATestHasRun()
@@ -71,7 +63,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         
         $this->assertFalse($test->hasRun());
         
-        $test->run();
+        $test->getVariation();
         
         $this->assertTrue($test->hasRun());
         
@@ -88,8 +80,6 @@ class TestTest extends \PHPUnit_Framework_TestCase
     {
         $test = $this->getTest();
         
-        $test->run();
-        
         for ($i = 0; $i < 1000; $i++) {
             $this->assertEquals('b', $test->getVariation());
         }
@@ -98,8 +88,6 @@ class TestTest extends \PHPUnit_Framework_TestCase
     public function testGettingTheVariationOfATestWithOnlyOneVariation()
     {
         $test = $this->getTest('test', array('a' => 2));
-        
-        $test->run();
         
         for ($i = 0; $i < 1000; $i++) {
             $this->assertEquals('a', $test->getVariation());
@@ -111,7 +99,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunningATestWithoutVariationThrowsAnException()
     {
-        $this->getTest('name', array(), array('a' => 'myParam'))->run();
+        $this->getTest('name', array(), array('a' => 'myParam'))->getVariation();
     }
     
     public function testRetrievingTheTrackingNameOfTheTest()
@@ -125,7 +113,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('b', $test->getTrackingName());
         
         $test = $this->getTest('a', array(1));
-        $test->run('b');
+        $test->getVariation('b');
         
         $this->assertEquals('b', $test->getTrackingName());
     }
@@ -138,7 +126,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('myParam', $test->get('a'));
         $this->assertNull($test->get('nonExistingParam'));
         
-        $test->run(null, array('b' => 12, 'a' => 11));
+        $test->getVariation(null, array('b' => 12, 'a' => 11));
         
         $this->assertCount(2, $test->getParameters());
         $this->assertEquals(12, $test->get('b'));
@@ -148,11 +136,11 @@ class TestTest extends \PHPUnit_Framework_TestCase
     public function testGettingTheVariationOfATestWithSplitOddsBetweenTwoVariations()
     {
         $tries  = 100000;
-        $test   = $this->getTest('test', array('a' => 1, 'b' => 1));
         $counts = array('a' => 0, 'b' => 0);
         
         for ($i = 0; $i < $tries; $i++) {
-            $test->run();
+            $test   = $this->getTest('test', array('a' => 1, 'b' => 1));
+            $test->getVariation();
             $counts[$test->getVariation()] += 1;
         }
         
@@ -168,11 +156,11 @@ class TestTest extends \PHPUnit_Framework_TestCase
     public function testGettingTheVariationOfATestWithIrregularOddsOfVariations()
     {
         $tries  = 100000;
-        $test   = $this->getTest('test', array('a' => 1, 'b' => 2));
         $counts = array('a' => 0, 'b' => 0);
         
         for ($i = 0; $i < $tries; $i++) {
-            $test->run();
+            $test   = $this->getTest('test', array('a' => 1, 'b' => 2));
+            $test->getVariation();
             $counts[$test->getVariation()] += 1;
         }
         

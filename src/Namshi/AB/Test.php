@@ -126,28 +126,6 @@ class Test implements Countable
     }
     
     /**
-     * Runs the test.
-     * 
-     * @param string $trackingName
-     * @param array $parameters
-     * @return bool
-     */
-    public function run($trackingName = null, array $parameters = array())
-    {
-        if (!$this->count()) {
-            throw new BadMethodCallException(self::ERROR_TEST_RAN_WITHOUT_VARIATIONS);
-        }
-        
-        if ($trackingName) {
-            $this->setTrackingName($trackingName);
-        }
-        
-        $this->setParameters(array_merge($this->getParameters(), $parameters));
-        $this->hasRun(true);
-        $this->calculateVariation();
-    }
-    
-    /**
      * Returns the variation of this test.
      * 
      * You must run the test before getting the variation, else a 
@@ -156,21 +134,26 @@ class Test implements Countable
      * even if its odd is set to 0.
      * 
      * @return string
-     * @throws BadMethodCallException
      */
-    public function getVariation()
+    public function getVariation($trackingName = null, array $parameters = array())
     {
-        if ($this->hasRun()) {
-            if ($this->isDisabled()) {
-                $variations = array_keys($this->getVariations());
-
-                return array_shift($variations);
-            }
-            
-            return $this->variation;
+        if ($trackingName) {
+            $this->setTrackingName($trackingName);
         }
         
-        throw new BadMethodCallException(self::ERROR_GET_VARIATION_BEFORE_RUNNING_TEST);
+        $this->setParameters(array_merge($this->getParameters(), $parameters));
+        
+        if (!$this->hasRun()) {
+            $this->run($trackingName, $parameters);
+        }
+        
+        if ($this->isDisabled()) {
+            $variations = array_keys($this->getVariations());
+
+            return array_shift($variations);
+        }
+
+        return $this->variation;
     }
     
     /**
@@ -239,6 +222,23 @@ class Test implements Countable
     public function setTrackingName($trackingName)
     {
         $this->trackingName = $trackingName;
+    }
+    
+    /**
+     * Runs the test.
+     * 
+     * @param string $trackingName
+     * @param array $parameters
+     * @return bool
+     */
+    protected function run()
+    {
+        if (!$this->count()) {
+            throw new BadMethodCallException(self::ERROR_TEST_RAN_WITHOUT_VARIATIONS);
+        }
+        
+        $this->hasRun(true);
+        $this->calculateVariation();
     }
     
     /**
