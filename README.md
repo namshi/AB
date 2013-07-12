@@ -196,3 +196,7 @@ $httpClient->makeRequest('http://api.yourtool.com/register/' . $test->getTrackin
 ## How odds internally work
 
 ## Testing this library
+
+This library has been unit tested with
+[PHPUnit](http://phpunit.de/manual/current/en/index.html),
+so just `cd` into its folder and run `phpunit`.
