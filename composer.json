@@ -1,0 +1,23 @@
+{
+    "name": "namshi/ab",
+    "description": "A library to run AB tests withink your code.",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "odino",
+            "email": "alessandro.nadalin@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "Namshi\\AB": "src/",
+            "Namshi\\AB\\Test": "tests/"
+        }
+    }
+}
