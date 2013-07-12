@@ -193,6 +193,30 @@ $httpClient->makeRequest('http://api.yourtool.com/register/' . $test->getTrackin
 
 ## Test parameters
 
+You can also attach any parameter you want to
+a test by just injecting them (or with the `set`
+method):
+
+``` php
+$test = new Test('example', array(1, 2), 'tracking_name', array(
+    'par1' => 1,
+    'par2' => new stdClass,
+));
+
+$test->set('par3', 'Whoooops!')
+```
+
+So that you can then easily retrieve them in other parts of
+the code:
+
+``` php
+$test->getParameters(); // returns all the parameters
+
+$test->get('par3'); // Whoooops!
+
+$test->get('i-dont-exist'); // NULL
+```
+
 ## How odds internally work
 
 When you assign variations with their odds to a test,

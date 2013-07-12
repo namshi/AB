@@ -203,6 +203,17 @@ class Test implements Countable
             return $this->parameters[$parameter];
         }
     }
+    
+    /**
+     * Returns a test's parameter.
+     * 
+     * @param string $parameter
+     * @param mixed $value
+     */
+    public function set($parameter, $value)
+    {
+        $this->parameters[$parameter] = $value;
+    }
 
     /**
      * Gets the tracking name of this test.

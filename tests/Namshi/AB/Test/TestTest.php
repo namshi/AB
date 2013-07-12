@@ -131,6 +131,9 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $test->getParameters());
         $this->assertEquals(12, $test->get('b'));
         $this->assertEquals(11, $test->get('a'));
+        
+        $test->set('b', null);
+        $this->assertNull($test->get('b'));
     }
     
     public function testGettingTheVariationOfATestWithSplitOddsBetweenTwoVariations()
