@@ -53,6 +53,53 @@ as an example ;-)
 
 ## Handling multiple tests
 
+Taken by an AB-test-rage, you might want
+to start using AB tests for everything:
+that's why we added a test container where
+you can register as much tests as you want,
+and retrieve them easily:
+
+``` php
+use Namshi\AB\Container;
+use Namshi\AB\Test;
+
+// instantiate the container with a test
+$container = new Container(array(
+    new Test('homepage_color', array(
+        'blue'  => 1,
+        'black' => 2,
+    )),
+));
+
+// add another test
+$container->add(new Test('checkout_button_test', array(
+    'Buy now'               => 4,
+    'Go to checkout'        => 1,
+    'Proceed to checkout'   => 1,
+)));
+
+// then you can retrieve all the tests
+$container->getAll();
+
+// or a single test, by its name
+$container->get('checkout_button_text');
+```
+
+The `Container` implements the `ArrayAccess` and
+`Countable` interfaces, so that you can access its
+tests like if it is an array:
+
+``` php
+$tests = $container; // I only do this for readability
+
+foreach($tests as $test) {
+    echo sprintf("Test '%s' has the variation %s", $test->getName(), $test->getVariation());
+}
+
+// if you have time to waste, count the tests :)
+echo count($tests);
+```
+
 ## Variations
 
 ## How to present the same variations across multiple requests
