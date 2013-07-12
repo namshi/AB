@@ -24,7 +24,38 @@ Just require it in your `composer.json`:
 
 ## Creating and running a test
 
+Creating tests is very simple, as you only need to
+define the test name and the variations, with their
+absolute probability:
+
+``` php
+use Namshi\AB\Test;
+
+$homepageColorTest = new Test('homepage_color', array(
+    'blue' => 1,
+    'red' => 1,
+));
+
+$homepageColorTest->run();
+```
+
+and at this point you can change the color of the
+homepage by simply running the test and checking
+which variation has been picked:
+
+``` php
+<html>
+  ...
+  ...
+  <body style="background-color: <?php echo $homepageColorTest->getVariation(); ?>">
+```
+
+Of course, the mess of a code above is here just
+as an example ;-)
+
 ## Handling multiple tests
+
+## Variations
 
 ## How to present the same variations across multiple requests
 
