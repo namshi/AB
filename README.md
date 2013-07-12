@@ -137,6 +137,24 @@ $test->getVariation(); // will throw a BadMethodCallException
 
 ## Disabling tests
 
+Sometimes you might want to disable tests for different purposes,
+for example if the user agent who is visiting the page is a bot.
+
+``` php
+$test = new Test('my_ab_test', array(
+    'a' => 0,
+    'b' => 1,
+));
+
+$test->disable();
+
+$test->getVariation(); // will return 'a'!
+```
+
+Once you disable the test and run it, it **will
+always return the first variation**, no matter what
+its odds are! Yes, even zero...
+
 ## Tracking name
 
 ## Test parameters
