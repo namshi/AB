@@ -158,16 +158,10 @@ class Test implements Countable
      * 
      * @return string
      */
-    public function getVariation($trackingName = null, array $parameters = array())
-    {
-        if ($trackingName) {
-            $this->setTrackingName($trackingName);
-        }
-        
-        $this->setParameters(array_merge($this->getParameters(), $parameters));
-        
+    public function getVariation()
+    {        
         if (!$this->hasRun()) {
-            $this->run($trackingName, $parameters);
+            $this->run();
         }
         
         if ($this->isDisabled()) {

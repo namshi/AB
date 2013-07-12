@@ -111,11 +111,6 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $test = $this->getTest('a', array(), 'b');
         
         $this->assertEquals('b', $test->getTrackingName());
-        
-        $test = $this->getTest('a', array(1));
-        $test->getVariation('b');
-        
-        $this->assertEquals('b', $test->getTrackingName());
     }
     
     public function testTheTestCanHaveParameters()
@@ -126,11 +121,10 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('myParam', $test->get('a'));
         $this->assertNull($test->get('nonExistingParam'));
         
-        $test->getVariation(null, array('b' => 12, 'a' => 11));
+        $test->getVariation(null);
         
-        $this->assertCount(2, $test->getParameters());
-        $this->assertEquals(12, $test->get('b'));
-        $this->assertEquals(11, $test->get('a'));
+        $this->assertCount(1, $test->getParameters());
+        $this->assertEquals('myParam', $test->get('a'));
         
         $test->set('b', null);
         $this->assertNull($test->get('b'));
