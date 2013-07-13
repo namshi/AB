@@ -109,7 +109,7 @@ class Container implements ArrayAccess, Countable
     public function add(Test $test)
     {
         if ($this->getSeed()) {
-            $test->setSeed($this->calculateTestSeed($test));
+            $test->setSeed($this->calculateTestSeed($this->getSeed(), $test));
         }
         
         $this->tests[$test->getName()] = $test;

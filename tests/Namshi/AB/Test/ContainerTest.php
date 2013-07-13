@@ -95,10 +95,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertCount(1, array_unique($resultsAbc4));
-        $this->assertEquals(1234, $test->getSeed());
+        $this->assertEquals(1234 - 12, $test->getSeed());
 
         $this->assertCount(1, array_unique($resultsAb));
-        $this->assertEquals(3412310112111020220, $testAb->getSeed());
+        $this->assertEquals(3412310112111020220 - 12, $testAb->getSeed());
         
         $this->assertNotEquals($testAb->getVariation(), $test->getVariation());
     }
