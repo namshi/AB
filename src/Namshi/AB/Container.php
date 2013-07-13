@@ -51,19 +51,33 @@ class Container implements ArrayAccess, Countable
         $this->seed = (int) $seed;
         
         foreach($this->getAll() as $test) {            
-            $test->setSeed($this->calculateTestSeed($test));
+            $test->setSeed($this->calculateTestSeed($seed, $test));
         }
     }
     
-    protected function calculateTestSeed(Test $test)
+    /**
+     * Calculates a seed for the given $test, mixing the global seed and a
+     * numerical representation of the test name.
+     * 
+     * @param int $globalSeed
+     * @param \Namshi\AB\Test $test
+     * @return int
+     */
+    protected function calculateTestSeed($globalSeed, Test $test)
     {
         $seed = '';
         
-        foreach (str_split($test->getName()) as $letter) {
+        foreach (str_split(preg_replace("/[^A-Za-z0-9 ]/", '', $test->getName())) as $letter) {
             $seed .= is_numeric($letter) ? $letter : ord($letter) - 96;
         }
         
-        return $seed;
+        $seed = (int) $seed;
+
+        if ($seed > $globalSeed) {
+            return $seed - $globalSeed;
+        }
+        
+        return $globalSeed - $seed;
     }
     
     /**
