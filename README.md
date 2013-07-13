@@ -1,5 +1,7 @@
 # NAMSHI | AB
 
+[![Build Status](https://travis-ci.org/namshi/AB.png?branch=master)](https://travis-ci.org/namshi/AB)
+
 This library provides a layer to
 run AB tests on your applications.
 
