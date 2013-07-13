@@ -78,6 +78,22 @@ class Container implements ArrayAccess, Countable
     }
     
     /**
+     * Creates, registers and returns a test with the given parameters.
+     * 
+     * @param string $name
+     * @param array $variations
+     * @param string $trackingName
+     * @param array $parameters
+     * @return Test
+     */
+    public function createTest($name, array $variations = array(), $trackingName = null, array $parameters = array())
+    {
+        $this->add(new Test($name, $variations, $trackingName, $parameters));
+        
+        return $this[$name];
+    }
+    
+    /**
      * Calculates a seed for the given $test, mixing the global seed and a
      * numerical representation of the test name.
      * 
