@@ -300,8 +300,10 @@ class Test implements Countable
         
         foreach ($this->getVariations() as $variation => $odd) {
             $sum += $odd;
+            
             if($random <= $sum) {
                 $this->variation = $variation;
+                
                 return;
             }
         }
