@@ -56,6 +56,28 @@ class Container implements ArrayAccess, Countable
     }
     
     /**
+     * Convenient method to disable all the tests registered with this container
+     * at once.
+     */
+    public function disableTests()
+    {
+        foreach ($this->getAll() as $test) {
+            $test->disable();
+        }
+    }
+    
+    /**
+     * Convenient method to run all the tests registered with this container at
+     * once.
+     */
+    public function runTests()
+    {
+        foreach ($this->getAll() as $test) {
+            $test->getVariation();
+        }
+    }
+    
+    /**
      * Calculates a seed for the given $test, mixing the global seed and a
      * numerical representation of the test name.
      * 

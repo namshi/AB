@@ -31,6 +31,36 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $container); 
     }
     
+    public function testYouCanDisableAllTestsFromTheContainer()
+    {
+        $test1 = new Test(1);
+        $test2 = new Test(2);
+        $container = new Container(array($test1, $test2));
+
+        $this->assertFalse($test1->isDisabled());
+        $this->assertFalse($test2->isDisabled());
+        
+        $container->disableTests();
+        
+        $this->assertTrue($test1->isDisabled());
+        $this->assertTrue($test2->isDisabled());
+    }
+    
+    public function testYouCanRunAllTestsFromTheContainer()
+    {
+        $test1 = new Test(1, array(1));
+        $test2 = new Test(2, array(1));
+        $container = new Container(array($test1, $test2));
+        
+        $this->assertFalse($test1->hasRun());
+        $this->assertFalse($test2->hasRun());
+        
+        $container->runTests();
+        
+        $this->assertTrue($test1->hasRun());
+        $this->assertTrue($test2->hasRun());
+    }
+    
     public function testIfTwoTestsHaveTheSameNameTheContainerOnlyRegistersOneOfThem()
     {
         $container = new Container(array(new Test(1), new Test(1)));
