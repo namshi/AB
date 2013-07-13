@@ -294,18 +294,19 @@ class Test implements Countable
             mt_srand($this->getSeed());
         }
 
-        $random = mt_rand(1, array_sum($this->getVariations()));
-        $min    = 0;
-        $max    = 0;
+        $sum    = 0;
+        $max    = array_sum($this->getVariations());
+        $random = mt_rand(1, $max);
         
         foreach ($this->getVariations() as $variation => $odd) {
-            $max += $odd;
-
-            if ($odd && $random > $min && $random <= $max) {
-                $this->variation = $variation;
-            }
+            $sum += $odd;
             
-            $min = $max;
+            if($random <= $sum) {
+                $this->variation = $variation;
+                
+                return;
+            }
         }
     }
+
 }
