@@ -1,6 +1,6 @@
 {
     "name": "namshi/ab",
-    "description": "A library to run AB tests withink your code.",
+    "description": "A library to run AB tests within your code.",
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
