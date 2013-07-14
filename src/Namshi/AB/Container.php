@@ -214,8 +214,13 @@ class Container implements ArrayAccess, Countable, IteratorAggregate
         return count($this->getAll());
     }
     
-    
-    public function getIterator() {
+    /**
+     * Returns the iterator to use to iterate over the container.
+     * 
+     * @return ArrayIterator
+     */
+    public function getIterator()
+    {
         return new ArrayIterator($this->tests);
     }
 }
