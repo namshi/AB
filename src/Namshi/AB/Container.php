@@ -5,11 +5,13 @@ namespace Namshi\AB;
 use Namshi\AB\Test;
 use ArrayAccess;
 use Countable;
+use IteratorAggregate;
+use ArrayIterator;
 
 /**
  * Class used wrap a collection of tests.
  */
-class Container implements ArrayAccess, Countable
+class Container implements ArrayAccess, Countable, IteratorAggregate
 {
     protected $tests = array();
     protected $seed;
@@ -210,5 +212,15 @@ class Container implements ArrayAccess, Countable
     public function count()
     {
         return count($this->getAll());
+    }
+    
+    /**
+     * Returns the iterator to use to iterate over the container.
+     * 
+     * @return ArrayIterator
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->tests);
     }
 }
