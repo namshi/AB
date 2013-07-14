@@ -212,7 +212,7 @@ a test by just injecting them (or with the `set`
 method):
 
 ``` php
-$test = new Test('example', array(1, 2), 'tracking_name', array(
+$test = new Test('example', array(1, 2), array(
     'par1' => 1,
     'par2' => new stdClass,
 ));
