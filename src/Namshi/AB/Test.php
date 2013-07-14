@@ -13,7 +13,6 @@ use BadMethodCallException;
 class Test implements Countable
 {
     protected $name;
-    protected $trackingName;
     protected $variations   = array();
     protected $isEnabled    = true;
     protected $hasRun       = false;
@@ -35,15 +34,13 @@ class Test implements Countable
      * 
      * @param string $name
      * @param array $variations
-     * @param string $ttrackingName
      * @param array $parameters
      */
-    public function __construct($name, array $variations = array(), $trackingName = null, array $parameters = array())
+    public function __construct($name, array $variations = array(), array $parameters = array())
     {
         $this->setName($name);
         $this->setVariations($variations);
         $this->setParameters($parameters);
-        $this->setTrackingName($trackingName);
     }
     
     /**
@@ -231,33 +228,9 @@ class Test implements Countable
     {
         $this->parameters[$parameter] = $value;
     }
-
-    /**
-     * Gets the tracking name of this test.
-     * 
-     * @return string
-     */
-    public function getTrackingName()
-    {
-        return $this->trackingName ?: $this->getName();
-    }
-
-    /**
-     * Sets the $trackingName of this test.
-     * 
-     * @param string $trackingName
-     */
-    public function setTrackingName($trackingName)
-    {
-        $this->trackingName = $trackingName;
-    }
     
     /**
      * Runs the test.
-     * 
-     * @param string $trackingName
-     * @param array $parameters
-     * @return bool
      */
     protected function run()
     {

@@ -27,11 +27,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testYouCanCreateTestsFromThContainerItself()
     {
         $container = new Container();
-        $container->createTest('myTest', array(1, 2), 'aaa', array(1 => 2));
+        $container->createTest('myTest', array(1, 2), array(1 => 2));
         
         $this->assertCount(1, $container->getAll()); 
         $this->assertInstanceOf('Namshi\AB\Test', $container['myTest']); 
-        $this->assertEquals('aaa', $container['myTest']->getTrackingName()); 
         $this->assertEquals(2, $container['myTest']->get(1)); 
     }
     

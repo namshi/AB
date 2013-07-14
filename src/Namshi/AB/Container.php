@@ -86,9 +86,9 @@ class Container implements ArrayAccess, Countable
      * @param array $parameters
      * @return Test
      */
-    public function createTest($name, array $variations = array(), $trackingName = null, array $parameters = array())
+    public function createTest($name, array $variations = array(), array $parameters = array())
     {
-        $this->add(new Test($name, $variations, $trackingName, $parameters));
+        $this->add(new Test($name, $variations, $parameters));
         
         return $this[$name];
     }

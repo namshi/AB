@@ -9,9 +9,9 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * @return Namshi\AB\Test
      */
-    public function getTest($name = 'myTest', array $variations = array('a' => 0, 'b' => 1), $trackingName = null, array $parameters = array())
+    public function getTest($name = 'myTest', array $variations = array('a' => 0, 'b' => 1), array $parameters = array())
     {
-        return new Test($name, $variations, $trackingName, $parameters);
+        return new Test($name, $variations, $parameters);
     }
     
     public function testTheTestsFirstArgumentIsItsName()
@@ -102,20 +102,9 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->getTest('name', array(), array('a' => 'myParam'))->getVariation();
     }
     
-    public function testRetrievingTheTrackingNameOfTheTest()
-    {
-        $test = $this->getTest();
-        
-        $this->assertEquals('myTest', $test->getTrackingName());
-        
-        $test = $this->getTest('a', array(), 'b');
-        
-        $this->assertEquals('b', $test->getTrackingName());
-    }
-    
     public function testTheTestCanHaveParameters()
     {
-        $test = $this->getTest('name', array(1), null, array('a' => 'myParam'));
+        $test = $this->getTest('name', array(1), array('a' => 'myParam'));
         
         $this->assertCount(1, $test->getParameters());
         $this->assertEquals('myParam', $test->get('a'));

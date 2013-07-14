@@ -205,42 +205,6 @@ Once you disable the test and run it, it **will
 always return the first variation**, no matter what
 its odds are! Yes, even zero...
 
-## Tracking name
-
-Let's say that you are using an AB test tracking
-tool that lets you define a test and registers the
-results: it might be that this tool requires you
-to register the result via HTTP calls using the test
-ID as per their format (like: `longCluelessString123456`).
-
-At the same time you don't want to have, within
-your code, names that are not meaningful:  that's why
-we've added a **tracking name** that you can set for
-each test.
-
-``` php
-$trackingName = "iu23r4b3rib3rb3rb3ib";
-
-$test = new Test('checkout_button_text', array(
-    'Buy now!'              => 1,
-    'Buy immediately man!'  => 3,
-), $trackingName);
-```
-
-At that point, you can still reference the test, in the
-container, with **your** name:
-
-``` php
-$testContainer->get('checkout_button_text')->getVariation();
-```
-
-and when you need to report the result to your external
-tool, you can use the actual tracking identifier:
-
-``` php
-$httpClient->makeRequest('http://api.yourtool.com/register/' . $test->getTrackingName() . '/' . $test->getVariation());
-```
-
 ## Test parameters
 
 You can also attach any parameter you want to
