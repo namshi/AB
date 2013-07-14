@@ -112,7 +112,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->container[$test->getName()] = $test;
         
         foreach ($this->container as $test) {
-            $this->assertEquals('mySetYesy', $test->getName());
+            $this->assertEquals('mySetTest', $test->getName());
         }
     }
     
