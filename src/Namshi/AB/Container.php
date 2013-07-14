@@ -6,6 +6,7 @@ use Namshi\AB\Test;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
+use ArrayIterator;
 
 /**
  * Class used wrap a collection of tests.
