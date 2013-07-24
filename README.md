@@ -182,8 +182,7 @@ $container->setSeed($_SESSION['seed']); // 326902637627;);
 The advantage of setting the seed through the container is that
 you don't have to maintain a seed for every test you run in
 the session, you can just use a global seed and the container
-will assign a unique seed to each test by combining the general
-seed and a numerical version of the tests' name (`abce` becomes `1235`).
+will assign a unique seed to each test.
 
 ## Disabling tests
 
