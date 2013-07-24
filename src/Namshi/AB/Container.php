@@ -104,13 +104,7 @@ class Container implements ArrayAccess, Countable, IteratorAggregate
      */
     protected function calculateTestSeed($globalSeed, Test $test)
     {
-        $seed = '';
-        
-        foreach (str_split(preg_replace("/[^A-Za-z0-9 ]/", '', $test->getName())) as $letter) {
-            $seed .= is_numeric($letter) ? $letter : ord($letter) - 96;
-        }
-        
-        $seed = (int) $seed;
+        $seed = hexdec(substr(md5($test->getName()), 0, 7));
 
         if ($seed > $globalSeed) {
             return $seed - $globalSeed;
