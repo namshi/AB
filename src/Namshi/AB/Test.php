@@ -232,7 +232,7 @@ class Test implements Countable
     /**
      * Runs the test.
      */
-    protected function run()
+    public function run()
     {
         if (!$this->count()) {
             throw new BadMethodCallException(self::ERROR_TEST_RAN_WITHOUT_VARIATIONS);
