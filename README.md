@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/namshi/AB.png?branch=master)](https://travis-ci.org/namshi/AB)
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/82e20b9d-e943-4d19-a9d3-b85a2a48861a/small.png)](https://insight.sensiolabs.com/projects/82e20b9d-e943-4d19-a9d3-b85a2a48861a)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/82e20b9d-e943-4d19-a9d3-b85a2a48861a/mini.png)](https://insight.sensiolabs.com/projects/82e20b9d-e943-4d19-a9d3-b85a2a48861a)
 
 This library provides a layer to
 run AB tests on your applications.
