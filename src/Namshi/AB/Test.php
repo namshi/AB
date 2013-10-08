@@ -2,7 +2,6 @@
 
 namespace Namshi\AB;
 
-use Namshi\AB\Variation\Odd;
 use Countable;
 use InvalidArgumentException;
 use BadMethodCallException;
