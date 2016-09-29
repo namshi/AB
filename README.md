@@ -143,7 +143,7 @@ Let's say that you are running a test that defines whether
 the background color of your website should be black or white.
 
 Once a user hits the homepage, he will get the white one, but
-as soon as he refreshes the page he might get the white one!
+as soon as he refreshes the page he might get the black one!
 
 To be consistent with the variations, for a user's session,
 you should store a unique number (seed) and pass it to the
