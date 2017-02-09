@@ -11,6 +11,8 @@ use BadMethodCallException;
  */
 class Test implements Countable
 {
+    use GaExperimentTrait;
+
     protected $name;
     protected $variations   = array();
     protected $isEnabled    = true;
@@ -151,6 +153,7 @@ class Test implements Countable
      * BadMethodCallException is thrown.
      * If the test is disabled, the first variation will always be returned,
      * even if its odd is set to 0.
+     * Sets the GoogleAnalyticsExperimentVariation if the a parameter with a key equal to the variation exists.
      * 
      * @return string
      */
@@ -163,10 +166,19 @@ class Test implements Countable
         if ($this->isDisabled()) {
             $variations = array_keys($this->getVariations());
 
-            return array_shift($variations);
+            $variation = array_shift($variations);
+        }
+        else{
+            $variation = $this->variation;
         }
 
-        return $this->variation;
+        // If the variant has a GA Experiment Variant Id
+        if($this->get($variation) !== NULL){
+            // Set the Google Analytics Experiment Variant Id
+            static::setGoogleAnalyticsExperimentVariant($this->get($variation));
+        }
+
+        return $variation;
     }
     
     /**
@@ -196,12 +208,22 @@ class Test implements Countable
 
     /**
      * Sets the parameters for this test.
+     *
+     * If an 'expId' parameter is defined, the googleAnalyticsExperimentId is set accordingly
+     * Any parameters values that have keys matching a variation key are interpreted as google experiment variant id's
+     * See https://developers.google.com/analytics/solutions/experiments-server-side#store-user for how to determine
+     * what the variation id's should be set to
      * 
      * @param array $parameters
      */
     public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
+
+        if($this->get('expId')){
+            // Set the Google Analytics ExperimentId
+            static::setGoogleAnalyticsExperimentId($this->get('expId'));
+        }
     }
     
     /**

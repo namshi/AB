@@ -7,7 +7,7 @@ use Namshi\AB\Test;
 class TestTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @return Namshi\AB\Test
+     * @return \Namshi\AB\Test
      */
     public function getTest($name = 'myTest', array $variations = array('a' => 0, 'b' => 1), array $parameters = array())
     {
@@ -171,5 +171,22 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($aProbability < 0.34);
         $this->assertTrue($bProbability > 0.66);
         $this->assertTrue($bProbability < 0.68);
+    }
+
+    public function testSettingGaExperimentId()
+    {
+        $test = $this->getTest('test', ['a'=>1,'b'=>1], ['expId'=>'xyz']);
+        $this->assertEquals('xyz',Test::getGoogleAnalyticsExperimentId());
+
+        Test::setGoogleAnalyticsExperimentId('123');
+        $this->assertEquals('123',Test::getGoogleAnalyticsExperimentId());
+    }
+
+    public function testSettingGaExperimentVariantId()
+    {
+        $params = ['a'=>0,'b'=>2];
+        $test = $this->getTest('test', ['a'=>1,'b'=>1], $params);
+        $variation = $test->getVariation();
+        $this->assertEquals($params[$variation],Test::getGoogleAnalyticsExperimentVariant());
     }
 }
