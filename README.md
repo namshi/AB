@@ -6,6 +6,8 @@
 
 This library provides a layer to
 run AB tests on your applications.
+Supports sending AB test data to Google Analytics
+for tracking via server-side Content Experiments.
 
 AB testing is useful when you want
 to change anything on your application
@@ -205,6 +207,72 @@ $test->getVariation(); // will return 'a'!
 Once you disable the test and run it, it **will
 always return the first variation**, no matter what
 its odds are! Yes, even zero...
+
+## Integrating with Google Analytics: Server-Side Content Experiments
+
+Using Google Analytics (GA) can be an easy way to track the results of AB testing.
+If you're AB tests don't use separate URL's, then you can send your AB data to a 
+GA server-side Content Experiment setup.
+
+To start, read through 
+https://developers.google.com/analytics/solutions/experiments-server-side#store-user
+to get a good understanding of how to setup the experiment on GA. During setup,
+take note of your Experiment Id and Variation Ids. (Variation Ids are numerically
+numbered and start at 0 for the "Original Page")
+
+Once GA is setup:
+* Assign your test the GA Experiment Id by passing in a parameter with a key of 'expId'
+* Assign your variations their Variation Ids by passing in parameter keys 
+equal to the variation value with values equal to that variation's id 
+
+
+``` php
+$test = new Test('my_ab_test', array(
+        'a' => 1,
+        'b' => 1,
+        'c' => 1,
+    ),
+    array(
+        'expId' => 'xyz' // Experiment Id of 'xyz'
+        'a' => 0,        // variation 'a' has a GA Variation Id of 0
+        'b' => 1,        // variation 'b' has a GA Variation Id of 1
+        'c' => 2         // variation 'c' has a GA Variation Id of 2
+    )
+);
+
+// seed test...
+
+// choose variation...
+
+```
+
+Then, assuming this is the only AB test on this page, dump send GA the results by 
+doing the following just below where your analytics.js/tag-manager javascript
+is loaded:
+
+``` php
+<script>
+    // Include analytics.js/tag-manager js here...
+    
+    <?= Test::getGoogleAnalyticsExperimentJsContent() ?>
+</script>
+```
+
+Continuing this example, if the chosen variation was variation 'c' it would result in the following generated code:
+``` php
+<script>
+    // Include analytics.js/tag-manager js here...
+    
+    ga('set', 'expId', 'xyz'); ga('set', 'expVar', '2'); ga('send','pageview');
+</script>
+```
+
+To reference GA's official documentation see:
+https://developers.google.com/analytics/devguides/collection/analyticsjs/experiments#server-example
+
+Important Note: _GA Content Experiments only supports tracking one experiment per page, and so the 
+getGoogleAnalyticsExperimentJsContent() method also assumes only one AB test is being ran per page.
+Thus it will always return the most recent test's JS Content._
 
 ## Test parameters
 
