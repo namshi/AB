@@ -166,19 +166,16 @@ class Test implements Countable
         if ($this->isDisabled()) {
             $variations = array_keys($this->getVariations());
 
-            $variation = array_shift($variations);
-        }
-        else{
-            $variation = $this->variation;
+            return array_shift($variations);
         }
 
         // If the variant has a GA Experiment Variant Id
-        if($this->get($variation) !== NULL){
+        if($this->get($this->variation) !== NULL){
             // Set the Google Analytics Experiment Variant Id
-            static::setGoogleAnalyticsExperimentVariant($this->get($variation));
+            static::setGoogleAnalyticsExperimentVariant($this->get($this->variation));
         }
 
-        return $variation;
+        return $this->variation;
     }
     
     /**
