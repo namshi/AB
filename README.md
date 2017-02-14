@@ -254,6 +254,8 @@ is loaded:
 <script>
     // Include analytics.js/tag-manager js here...
     
+    ga('create', '<trackingId>'); // New tracker instance
+    
     <?= Test::getGoogleAnalyticsExperimentJsContent() ?>
 </script>
 ```
@@ -263,12 +265,16 @@ Continuing this example, if the chosen variation was variation 'c' it would resu
 <script>
     // Include analytics.js/tag-manager js here...
     
+    ga('create', '<trackingId>'); // New tracker instance
+    
     ga('set', 'expId', 'xyz'); ga('set', 'expVar', '2'); ga('send','pageview');
 </script>
 ```
 
-To reference GA's official documentation see:
+To reference GA's official documentation that describes how to send GA your experiment results see:
 https://developers.google.com/analytics/devguides/collection/analyticsjs/experiments#server-example
+
+To find your Tracking Id for your Tracker Instance see: https://support.google.com/analytics/answer/1008080?hl=en
 
 Important Note: _GA Content Experiments only supports tracking one experiment per page, and so the 
 getGoogleAnalyticsExperimentJsContent() method also assumes only one AB test is being ran per page.
