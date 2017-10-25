@@ -18,6 +18,7 @@ class Test implements Countable
     protected $variation;
     protected $parameters   = array();
     protected $seed;
+    protected $sumVariations = 0;
     
     const ERROR_TEST_RAN_WITHOUT_VARIATIONS         = "You are trying to run a test without specifying its variations";
     const ERROR_GET_VARIATION_BEFORE_RUNNING_TEST   = "You must run() the test before getting its variation";
@@ -91,7 +92,13 @@ class Test implements Countable
     {
         $this->validateVariations($variations);
         $this->variations = $variations;
-    }
+		$this->sumVariations = array_sum($this->getVariations());
+	}
+
+	public function getSumVariations()
+	{
+		return $this->sumVariations;
+	}
 
     /**
      * Gets the seed for this test.
@@ -267,8 +274,7 @@ class Test implements Countable
         }
 
         $sum    = 0;
-        $max    = array_sum($this->getVariations());
-        $random = mt_rand(1, $max);
+        $random = mt_rand(1, $this->getSumVariations());
         
         foreach ($this->getVariations() as $variation => $odd) {
             $sum += $odd;
