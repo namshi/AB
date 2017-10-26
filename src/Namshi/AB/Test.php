@@ -92,13 +92,18 @@ class Test implements Countable
     {
         $this->validateVariations($variations);
         $this->variations = $variations;
-		$this->sumVariations = array_sum($this->getVariations());
-	}
+        $this->sumVariations = array_sum($this->getVariations());
+    }
 
-	public function getSumVariations()
-	{
-		return $this->sumVariations;
-	}
+    /**
+     * Get sum all of weights variations.
+     *
+     * @return int
+     */
+    public function getSumVariations()
+    {
+        return $this->sumVariations;
+    }
 
     /**
      * Gets the seed for this test.
